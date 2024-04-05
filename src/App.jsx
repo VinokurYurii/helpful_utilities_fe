@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     async function getUsers() {
       axios.get('http://localhost:3000/api/users').then(function (response) {
+        console.log(response.data);
         setUsers(response.data);
       })
         .catch(function (error) {
