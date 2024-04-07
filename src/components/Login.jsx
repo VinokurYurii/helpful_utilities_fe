@@ -15,6 +15,7 @@ export default function Login() {
     axios.post("http://localhost:3000/api/auth/login", {user: {email, password}})
       .then(function (response) {
         console.log(response);
+        localStorage.setItem('jti', response.headers['authorization']);
       })
       .catch(function (error) {
         console.log(error);
