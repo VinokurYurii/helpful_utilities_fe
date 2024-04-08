@@ -1,12 +1,14 @@
 import {Grid} from "@mui/material";
 import HeaderMenu from "./HeaderMenu.jsx";
 import Layout from "./Layout.jsx";
+import {useEffect} from "react";
+import api from "../Api.js";
 
-export default function Careers() {
+export default function Careers({isLoggedIn, onSetIsLoggedIn}) {
   return (
     <>
       <>
-        <HeaderMenu />
+        <HeaderMenu isLoggedIn={isLoggedIn} onSetIsLoggedIn={onSetIsLoggedIn}/>
         <Layout>
 
           <Grid item xs={4}>
