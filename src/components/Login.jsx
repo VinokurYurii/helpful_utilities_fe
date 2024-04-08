@@ -3,35 +3,31 @@ import Layout from "./Layout.jsx";
 import {Button, Grid, TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useState} from "react";
-import axios from "axios";
+import api from "../Api.js";
 
-export default function Login() {
+export default function Login({isLoggedIn, onSetIsLoggedIn}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleLogin() {
+  async function handleLogin() {
     if (!email || !password) return;
 
-    axios.post("http://localhost:3000/api/auth/login", {user: {email, password}})
-      .then(function (response) {
-        console.log(response);
-        localStorage.setItem('jti', response.headers['authorization']);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const response = await api.login(email, password);
+
+    localStorage.setItem('jwt-token', response.headers['authorization']);
+    onSetIsLoggedIn(true);
   }
 
   return (
     <>
-      <HeaderMenu />
+      <HeaderMenu isLoggedIn={isLoggedIn} onSetIsLoggedIn={onSetIsLoggedIn}/>
       <Layout>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}>
           <Box
             component="form"
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
+              '& .MuiTextField-root': {m: 1, width: '25ch'},
             }}
             noValidate
             autoComplete="off"

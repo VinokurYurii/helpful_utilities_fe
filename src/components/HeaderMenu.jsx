@@ -1,26 +1,25 @@
 import {AppBar, Button, Container, Toolbar} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
+import api from "../Api.js";
 
-export default function HeaderMenu() {
+export default function HeaderMenu({isLoggedIn, onSetIsLoggedIn}) {
   const navItems = ['Homepage', "Careers"];
-  const accountItems = ["SignIn", "Login", "Logout"];
+  const accountItems = ["SignIn", "Login"];
   const navigate = useNavigate();
 
   function handleNavigation(e, pageName) {
     e.preventDefault();
     const page = pageName.toLowerCase()
 
-    if (page === "logout") {
-      logout();
-      return;
-    }
-
     const url = page === 'homepage' ? '/' : `/${page}`;
     navigate(url);
   }
 
-  function logout() {
+  async function handleLogout() {
+    await api.logout({'Authorization': localStorage.getItem('jwt-token')});
+    localStorage.removeItem('jwt-token');
+    onSetIsLoggedIn(false);
     navigate("/login");
   }
 
@@ -29,7 +28,7 @@ export default function HeaderMenu() {
       <Container maxWidth="xl">
         <Toolbar disableGutters={true}>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {navItems.map((item) => (
+            {isLoggedIn && navItems.map((item) => (
               <Button
                 key={item}
                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -40,7 +39,7 @@ export default function HeaderMenu() {
             ))}
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {accountItems.map((item) => (
+            {!isLoggedIn && accountItems.map((item) => (
               <Button
                 key={item}
                 sx={{ color: '#fff' }}
@@ -49,6 +48,11 @@ export default function HeaderMenu() {
                 {item}
               </Button>
             ))}
+            {isLoggedIn && <Button sx={{ color: '#fff' }}
+                                   onClick={() => handleLogout()}>
+              Logout
+            </Button>
+            }
           </Box>
         </Toolbar>
       </Container>
