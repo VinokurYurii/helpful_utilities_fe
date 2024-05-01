@@ -2,8 +2,11 @@ import {AppBar, Button, Container, Toolbar} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
 import api from "../Api.js";
+import {useContext} from "react";
+import {LoginContext} from "./LoginContext.jsx";
 
-export default function HeaderMenu({isLoggedIn, onSetIsLoggedIn}) {
+export default function HeaderMenu() {
+  const {isLoggedIn, onSetIsLoggedIn} = useContext(LoginContext);
   const navItems = ['Homepage', "Careers"];
   const accountItems = ["SignIn", "Login"];
   const navigate = useNavigate();
