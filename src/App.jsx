@@ -6,6 +6,7 @@ import Homepage from "./components/Homepage.jsx";
 import Login from "./components/Login.jsx";
 import SignIn from "./components/SignIn.jsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {LoginProvider} from "./components/LoginContext.jsx";
 
 const queryClient = new QueryClient();
 
@@ -14,17 +15,18 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Homepage isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn}/>} />
-          <Route path="login" element={<Login isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="signin" element={<SignIn isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="careers" element={<Careers isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
-        </Routes>
-      </BrowserRouter>
+      <LoginProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<Homepage isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn}/>} />
+            <Route path="login" element={<Login isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="signin" element={<SignIn isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="careers" element={<Careers isLoggedIn={isLoggedIn} onSetIsLoggedIn={setIsLoggedIn} />} />
+          </Routes>
+        </BrowserRouter>
+      </LoginProvider>
     </QueryClientProvider>
-  )
-  ;
+  );
 }
 
 export default App

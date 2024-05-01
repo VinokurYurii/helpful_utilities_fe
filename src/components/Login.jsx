@@ -2,13 +2,17 @@ import HeaderMenu from "./HeaderMenu.jsx";
 import Layout from "./Layout.jsx";
 import {Button, Grid, TextField} from "@mui/material";
 import Box from "@mui/material/Box";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import api from "../Api.js";
+import {LoginContext} from "./LoginContext.jsx";
+import {useNavigate} from "react-router-dom";
 
-export default function Login({isLoggedIn, onSetIsLoggedIn}) {
+export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const {onSetIsLoggedIn} = useContext(LoginContext);
   async function handleLogin() {
     if (!email || !password) return;
 
@@ -16,11 +20,13 @@ export default function Login({isLoggedIn, onSetIsLoggedIn}) {
 
     localStorage.setItem('jwt-token', response.headers['authorization']);
     onSetIsLoggedIn(true);
+
+    navigate("/");
   }
 
   return (
     <>
-      <HeaderMenu isLoggedIn={isLoggedIn} onSetIsLoggedIn={onSetIsLoggedIn}/>
+      <HeaderMenu/>
       <Layout>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}>

@@ -2,17 +2,20 @@ import HeaderMenu from "./HeaderMenu.jsx";
 import Layout from "./Layout.jsx";
 import {Button, Grid, TextField} from "@mui/material";
 import Box from "@mui/material/Box";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import api from "../Api.js";
 import {useNavigate} from "react-router-dom";
+import {LoginContext} from "./LoginContext.jsx";
 
-export default function SignIn({isLoggedIn, onSetIsLoggedIn}) {
+export default function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  const {onSetIsLoggedIn} = useContext(LoginContext);
 
   async function handleSignIn() {
     const response = await api.signIn({email, firstName, lastName, password, passwordConfirmation})
@@ -25,7 +28,7 @@ export default function SignIn({isLoggedIn, onSetIsLoggedIn}) {
 
   return (
     <>
-      <HeaderMenu isLoggedIn={isLoggedIn} onSetIsLoggedIn={onSetIsLoggedIn}/>
+      <HeaderMenu/>
       <Layout>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}>
